@@ -43,17 +43,19 @@ def main(argv=None):
                             default=None,
                             help="aws session token")
 
-        parser.add_argument("--profile",
-                            dest="aws_profile",
-                            type=str,
-                            default=os.environ.get('AWS_PROFILE', None),
-                            help="aws profile")
-
         parser.add_argument("--aws-region",
                             dest="aws_region",
                             type=str,
                             default=os.environ.get('AWS_REGION', None),
                             help="aws region")
+
+        parser.add_argument("--url-endpoint",
+                            dest="url_endpoint",
+                            type=str,
+                            default=None,
+                            help="aws endpoint")
+
+
 
     def add_date_range_arguments(parser, default_start='5m'):
         parser.add_argument("-s", "--start",

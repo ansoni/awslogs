@@ -31,9 +31,10 @@ def milis2iso(milis):
     return (res + ".000")[:23] + 'Z'
 
 
-def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_session_token, aws_region):
+def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_session_token, aws_region, url_endpoint):
     core_session = botocore.session.get_session()
     core_session.set_config_variable('profile', aws_profile)
+    core_session.set_config_variable('endpoint_url', url_endpoint)
 
     credential_provider = core_session.get_component('credential_provider').get_provider('assume-role')
     cache_dir = os.path.join(os.path.expanduser('~'), '.aws', 'cli', 'cache')
@@ -64,6 +65,7 @@ class AWSLogs(object):
         self.aws_secret_access_key = kwargs.get('aws_secret_access_key')
         self.aws_session_token = kwargs.get('aws_session_token')
         self.aws_profile = kwargs.get('aws_profile')
+        self.url_endpoint = kwargs.get('url_endpoint')
         self.log_group_name = kwargs.get('log_group_name')
         self.log_stream_name = kwargs.get('log_stream_name')
         self.filter_pattern = kwargs.get('filter_pattern')
@@ -86,7 +88,8 @@ class AWSLogs(object):
             self.aws_access_key_id,
             self.aws_secret_access_key,
             self.aws_session_token,
-            self.aws_region
+            self.aws_region,
+            self.url_endpoint
         )
 
     def _get_streams_from_pattern(self, group, pattern):
