@@ -34,7 +34,6 @@ def milis2iso(milis):
 def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_session_token, aws_region, url_endpoint):
     core_session = botocore.session.get_session()
     core_session.set_config_variable('profile', aws_profile)
-    core_session.set_config_variable('endpoint_url', url_endpoint)
 
     credential_provider = core_session.get_component('credential_provider').get_provider('assume-role')
     cache_dir = os.path.join(os.path.expanduser('~'), '.aws', 'cli', 'cache')
@@ -46,7 +45,8 @@ def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_sess
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
         aws_session_token=aws_session_token,
-        region_name=aws_region)
+        region_name=aws_region,
+        endpoint_url=url_endpoint)
 
 
 class AWSLogs(object):
